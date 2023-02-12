@@ -31,7 +31,7 @@ public class ToDo extends Task {
 
     @Override
     public void display() {
-        if (done) {
+        if (isdone) {
             messageDisplay = Parser.TODO_MARKED + taskName;
         } else {
             messageDisplay = Parser.TODO_UNMARKED + taskName;
@@ -41,7 +41,7 @@ public class ToDo extends Task {
 
     @Override
     public void delete() {
-        if (done) {
+        if (isdone) {
             messageDelete = Parser.REMOVED_THIS_TASK
                     + Parser.TODO_MARKED_SPACED + taskName;
         } else {
@@ -51,17 +51,27 @@ public class ToDo extends Task {
     }
 
     @Override
+    public boolean isNull() {
+        return taskName.isBlank();
+    }
+
+    @Override
     public void marked() {
         messageMarked = Parser.MARKED_THIS_TASK_AS_DONE
                 + Parser.TODO_MARKED_SPACED + taskName + "\n";
-        done = true;
+        isdone = true;
     }
 
     @Override
     public void unmarked() {
         messageUnmarked = Parser.MARKED_THIS_TASK_AS_NOT_DONE_YET
                 + Parser.TODO_UNMARKED_SPACED + taskName + "\n";
-        done = false;
+        isdone = false;
+    }
+
+    @Override
+    public String toString() {
+        return "T|" + this.isIsdone() + "|" + this.rawInput;
     }
 
 }

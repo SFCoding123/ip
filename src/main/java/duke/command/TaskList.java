@@ -15,18 +15,25 @@ import duke.task.ToDo;
 import duke.utilities.Parser;
 
 
+
+
 /**
  * The type Task list.
  */
 public class TaskList {
+    private static final int TYPEINVALID = 0;
+    private static final int TYPETODO = 1;
+    private static final int TYPEDEADLINE = 2;
+    private static final int TYPEEVENTS = 3;
+
     /**
      * The List of tasks.
      */
-    private ArrayList<Task> tasks;
+    private final ArrayList<Task> tasks;
     /**
      * The Storage.
      */
-    private Storage storage;
+    private final Storage storage;
 
     /**
      * Instantiates a new Task list.
@@ -58,43 +65,28 @@ public class TaskList {
     private String add(Task input) {
         try {
             String str;
-            if (input.getTaskName().equals("") || input.getTaskName().isBlank()) {
+            if (input.isNull()) {
                 throw new DukeException("OOPS!!! "
-                        + "The description of a todo cannot be empty.\n");
+                        + "NULL Objects\n");
             } else {
-                if (input instanceof ToDo) {
-                    storage.write("T|" + input.isDone() + "|" + ((ToDo) input).rawInput);
-                } else if (input instanceof Deadlines) {
-                    if (((Deadlines) input).getEndDate() == null) {
-                        throw new DukeException("OOPS!!! "
-                                + "The date of a deadline cannot be empty.\n");
-                    }
-                    storage.write("D|" + input.isDone() + "|" + ((Deadlines) input).rawInput);
-                } else if (input instanceof Events) {
-                    if (((Events) input).getStart() == null || ((Events) input).getEnd() == null) {
-                        throw new DukeException("OOPS!!! "
-                                + "The time of event cannot be empty.\n");
-                    }
-                    storage.write("E|" + input.isDone() + "|" + ((Events) input).rawInput);
-                } else {
-                    System.out.println("Unspecific type");
-                }
+                storage.write(input.toString());
                 tasks.add(input);
                 input.add();
                 str = input.getMessageAdd() + "\n Now you have "
                         + tasks.size() + " tasks in the list";
+                return str;
             }
-            return str;
         } catch (DukeException e) {
             if (input instanceof ToDo) {
-                return "OOPS!!! The description of a todo cannot be empty.\n";
+                return "todo: " + e.getMessage();
             } else if (input instanceof Deadlines) {
-                return "OOPS!!! The description of a deadline cannot be empty.\n";
+                return "deadline: " + e.getMessage();
             } else {
-                return "OOPS!!! The description of a event cannot be empty.\n";
+                return "event:" + e.getMessage();
             }
         }
     }
+
 
     /**
      * Gui display all string.
@@ -108,7 +100,7 @@ public class TaskList {
             str.append(x + 1).append(". ").append(
                     tasks.get(x).getMessageDisplay()).append("\n");
         }
-        return str.toString();
+        return str + "\n";
     }
 
     /**
@@ -122,7 +114,7 @@ public class TaskList {
 
             String str;
             Task temp = tasks.get(index);
-            if (!temp.isDone()) {
+            if (!temp.isIsdone()) {
                 temp.marked();
                 str = temp.getMessageMarked();
                 storage.markAt(index);
@@ -146,7 +138,7 @@ public class TaskList {
         try {
             String str;
             Task temp = tasks.get(index);
-            if (temp.isDone()) {
+            if (temp.isIsdone()) {
                 temp.unmarked();
                 str = temp.getMessageUnmarked();
                 storage.unmarkAt(index);
@@ -431,8 +423,20 @@ public class TaskList {
      * @return the string
      */
     public String opsAddDeadline(String name) {
-        Deadlines deadlines = new Deadlines(name, false);
-        return add(deadlines);
+        try {
+            if (Deadlines.isFormat(name)) {
+                Deadlines deadlines = new Deadlines(name, false);
+                return add(deadlines);
+            } else {
+                throw new DukeException("Bro, Wrong Deadline Format!\n "
+                        + "correct Format: project meeting /by Sunday 2pm \n"
+                        + "or project meeting /by 2/12/2019 1800\n"
+                        + "or project meeting /by 2019-12-2 ");
+            }
+
+        } catch (DukeException e) {
+            return e.getMessage();
+        }
     }
 
     /**
@@ -442,7 +446,19 @@ public class TaskList {
      * @return the string
      */
     public String opsAddEvent(String name) {
-        Events events = new Events(name, false);
-        return add(events);
+        try {
+            if (Events.isFormat(name)) {
+                Events events = new Events(name, false);
+                return add(events);
+            } else {
+                throw new DukeException("Bro, Wrong Event Format!\n"
+                        + "correct Format: project meeting /from Mon 2pm /to 4pm\n"
+                        + "or project meeting /from Aug 6th 2pm /to 4pm\n");
+            }
+        } catch (DukeException e) {
+            return e.getMessage();
+        }
+
     }
+
 }

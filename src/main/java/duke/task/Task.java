@@ -31,17 +31,17 @@ public abstract class Task {
     /**
      * The Done.
      */
-    protected boolean done;
+    protected boolean isdone;
 
     /**
      * Instantiates a new Task.
      *
      * @param name the name
-     * @param done the done
+     * @param isdone the done
      */
-    Task(String name, boolean done) {
+    Task(String name, boolean isdone) {
         this.taskName = name;
-        this.done = done;
+        this.isdone = isdone;
         this.messageAdd = "";
         this.messageMarked = "";
         this.messageUnmarked = "";
@@ -72,8 +72,8 @@ public abstract class Task {
         return messageDelete;
     }
 
-    public boolean isDone() {
-        return done;
+    public boolean isIsdone() {
+        return isdone;
     }
 
     /**
@@ -100,4 +100,9 @@ public abstract class Task {
      * Delete.
      */
     public abstract void delete();
+
+    public abstract boolean isNull();
+
+
+    //todo create one for to check format
 }

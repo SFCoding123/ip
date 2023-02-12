@@ -7,9 +7,6 @@ import org.junit.jupiter.api.Test;
 import duke.task.ToDo;
 
 
-
-
-
 /**
  * The type To do test.
  */

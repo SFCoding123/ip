@@ -33,6 +33,26 @@ public class Events extends Task {
         extract();
     }
 
+    /**
+     * Is format boolean.
+     *
+     * @param name the name
+     * @return the boolean
+     */
+    public static boolean isFormat(String name) {
+        //acceptable format is project meeting /from Mon 2pm /to 4pm
+        // or project meeting /from Aug 6th 2pm /to 4pm;
+        String[] tokens = name.trim().split("/");
+
+        if (tokens.length < 3) {
+            return false;
+        }
+        String[] tokens2 = tokens[1].split(" ");
+        String[] tokens3 = tokens[2].split(" ");
+
+        return tokens.length == 3 && (tokens2.length == 4 || tokens2.length == 3) && tokens3.length == 2;
+    }
+
     public String getStart() {
         return start;
     }
@@ -58,7 +78,6 @@ public class Events extends Task {
         }
     }
 
-
     @Override
     public void add() {
         messageAdd = Parser.ADDED_THIS_TASK
@@ -67,7 +86,7 @@ public class Events extends Task {
 
     @Override
     public void display() {
-        if (done) {
+        if (isdone) {
             messageDisplay = Parser.EVENT_MARKED + taskName + start + end;
         } else {
             messageDisplay = Parser.EVENT_UNMARKED + taskName + start + end;
@@ -76,7 +95,7 @@ public class Events extends Task {
 
     @Override
     public void delete() {
-        if (done) {
+        if (isdone) {
             messageDelete = Parser.REMOVED_THIS_TASK
                     + Parser.EVENT_MARKED_SPACED + taskName + start + end;
         } else {
@@ -86,16 +105,26 @@ public class Events extends Task {
     }
 
     @Override
+    public boolean isNull() {
+        return taskName.isBlank() || start.isBlank() || end.isBlank();
+    }
+
+    @Override
     public void marked() {
         messageMarked = Parser.MARKED_THIS_TASK_AS_DONE
                 + Parser.EVENT_MARKED_SPACED + taskName + start + end;
-        done = true;
+        isdone = true;
     }
 
     @Override
     public void unmarked() {
         messageUnmarked = Parser.MARKED_THIS_TASK_AS_NOT_DONE_YET
                 + Parser.EVENT_UNMARKED_SPACED + taskName + start + end;
-        done = false;
+        isdone = false;
+    }
+
+    @Override
+    public String toString() {
+        return "E|" + this.isIsdone() + "|" + this.rawInput;
     }
 }

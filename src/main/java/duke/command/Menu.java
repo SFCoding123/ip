@@ -5,6 +5,8 @@ import java.util.Locale;
 import duke.utilities.Parser;
 
 
+
+
 /**
  * The type Menu.
  */
@@ -30,7 +32,7 @@ public class Menu {
             return Parser.BYE_MESSAGE;
 
         case "list":
-            return MANAGER.displayAll() + "\n";
+            return MANAGER.displayAll();
 
         case "mark":
             return MANAGER.opsMark(tokens);

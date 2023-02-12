@@ -1,4 +1,5 @@
 T|false| 1
-T|false| 2
-T|false| 1
-T|false| 3
+T|false| 2 
+D|false| hahah /by sunday
+E|false| hahahah /from 2pm /to 4pm
+E|false| hjahahah /from sunday 2 pm /to 4pm

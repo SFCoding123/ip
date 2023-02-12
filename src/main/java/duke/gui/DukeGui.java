@@ -38,11 +38,11 @@ public class DukeGui extends Application {
     /**
      * The Dialog contrainer.
      */
-    private VBox dialogContrainer = new VBox();
+    private final VBox dialogContrainer = new VBox();
     /**
      * The User input.
      */
-    private TextField userInput = new TextField();
+    private final TextField userInput = new TextField();
 
     @Override
     public void start(Stage stage) {
