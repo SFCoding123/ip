@@ -88,8 +88,7 @@ public class Deadlines extends Task {
             } else {
 
                 dateTranslator = new DateTranslator(rawInput);
-                endDate = dateTranslator.getOutput();
-                System.out.println(endDate);
+                endDate = " (by: " + dateTranslator.getOutput() + ")";
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             //exception forwarded to Task manager;
@@ -125,7 +124,7 @@ public class Deadlines extends Task {
 
     @Override
     public boolean isNull() {
-        return taskName.isBlank() || endDate.isBlank();
+        return taskName.isBlank() || endDate.isBlank() || endDate.matches("wrong Date format");
     }
 
 

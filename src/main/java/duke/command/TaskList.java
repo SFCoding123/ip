@@ -80,7 +80,7 @@ public class TaskList {
             if (input instanceof ToDo) {
                 return "todo: " + e.getMessage();
             } else if (input instanceof Deadlines) {
-                return "deadline: " + e.getMessage();
+                return "deadline: " + e.getMessage() + "OR wrong date time Format (2/12/2019 1800) or (2019-12-2)";
             } else {
                 return "event:" + e.getMessage();
             }
