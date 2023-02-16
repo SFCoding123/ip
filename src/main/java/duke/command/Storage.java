@@ -22,11 +22,13 @@ class Storage {
     /**
      * The Records.
      */
-    private ArrayList<String> records;
+    private ArrayList<String> records = new ArrayList<>();
     /**
      * The Path.
      */
     private String path;
+
+    private File file;
 
     /**
      * Instantiates a new Storage.
@@ -35,11 +37,16 @@ class Storage {
      */
     Storage(String des) {
         try {
-            writer = new FileWriter(des, true);
-            File store = new File(des);
-            reader = new Scanner(store);
-            path = des;
-            records = new ArrayList<>();
+            this.file = new File(des);
+            if (!file.exists()) {
+                file.getParentFile().mkdir();
+                file.createNewFile();
+                path = file.getPath();
+            } else {
+                path = des;
+            }
+            writer = new FileWriter(path, true);
+            reader = new Scanner(file);
         } catch (IOException e) {
             System.out.println("Invalid file Path\n");
         }
@@ -61,7 +68,11 @@ class Storage {
      * @return the boolean
      */
     public boolean isThereRecords() {
-        return records.isEmpty();
+        if (records == null) {
+            return false;
+        } else {
+            return records.isEmpty();
+        }
     }
 
     /**
@@ -123,13 +134,22 @@ class Storage {
      * Read Txt file
      */
     void read() {
-        while (reader.hasNextLine()) {
-            String data = reader.nextLine();
-            records.add(data);
+        try {
+            File userData = new File("Data");
+            if (!userData.exists()) {
+                userData.mkdir();
+            }
+            File dukeTxt = new File(userData, "duke.txt");
+            while (reader.hasNextLine()) {
+                String data = reader.nextLine();
+                records.add(data);
+            }
+            reader.close();
+        } catch (Exception e) {
+            //exception throwed
         }
-        reader.close();
-
     }
+
 
     /**
      * Write all.
@@ -156,11 +176,12 @@ class Storage {
      * @throws IOException the io exception
      */
     void clearFile() throws IOException {
-        FileWriter f1 = new FileWriter("/Users/s.f/ip/src/Data/duke.txt", false);
+        FileWriter f1 = new FileWriter("./Data/duke.txt", false);
         PrintWriter p1 = new PrintWriter(f1, false);
         p1.flush();
         p1.close();
         p1.close();
     }
+
 
 }

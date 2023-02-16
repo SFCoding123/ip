@@ -1,3 +1,0 @@
-T|false| borrow book
-D|true| return book /by Sunday
-E|false| project meeting /from mon 2pm /to 4pm

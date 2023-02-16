@@ -15,7 +15,7 @@ public class Menu {
      * The Manager.
      */
     private static final TaskList MANAGER =
-            new TaskList("/Users/s.f/ip/src/Data/duke.txt");
+            new TaskList("./Data/duke.txt");
 
     /**
      * In out string.
